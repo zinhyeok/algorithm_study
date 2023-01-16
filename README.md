@@ -1,4 +1,4 @@
-# Algorithm Stud
+# Algorithm Study
 
 ### week1 : 정렬
 
