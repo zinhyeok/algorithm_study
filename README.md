@@ -1,6 +1,4 @@
-# Algorithm Study
-
-## 꾸준히 공부하자 😆
+# Algorithm Stud
 
 ### week1 : 정렬
 
