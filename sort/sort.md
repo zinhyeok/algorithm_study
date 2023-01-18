@@ -165,6 +165,30 @@ def merge_sort(arr):
 2️⃣ 왼쪽 리스트와 오른쪽 리스트를 똑같은 방식으로 정렬
 
 ```python
+lst = [40,2,10,1,4]
+def quick_sort(array, start, end):
+	if start >= end: # 원소가 1개인 경우 종료
+		return
+	pivot = start # 피벗은 첫번째 원소
+	left = start + 1
+	right = end
+	while left <= right:
+		# 피벗보다 큰 데이터를 찾을 때까지 반복
+		while left <= end and array[left] <= array[pivot]:
+			left += 1
+		# 피벗보다 작은 데이터를 찾을 때까지 반복
+		while right >= start and array[right] >= array[pivot]:
+			right -= 1
+		if left > right : # 엇갈렸다면 작은 데이터와 피벗을 교체
+			array[right], array[pivot] = array[pivot], array[right]
+		else: # 엇갈리지 않았다면 작은 데이터와 큰 데이터를 교체
+			array[left], array[right] = array[right], array[left]
+	# 분할 이후 왼쪽 부분과 오른쪽 부분에서 각각 정렬 수행
+	quick_sort(array, start, right-1)
+	quick_sort(array, right+1, end)
+  
+quick_sort(lst, 0, len(array)-1)
+print(lst)
 
 ```
 
@@ -173,6 +197,9 @@ def merge_sort(arr):
 - 따라서 O(Kn) = O(nlogn)이다 
 
 ## 6. 계수 정렬(counting sort)
+-시간복잡도 O(n)을 가지는 정렬 
+- 데이터 값이 양수여야함 
+- 값의 범위가 너무 크지 않아야한다 
 ## 7. radix sort
 
 ✨ 코딩테스트에서 정렬 사용하기 
@@ -182,6 +209,9 @@ def merge_sort(arr):
 
 🎓 참고 및 출처
 https://hsp1116.tistory.com/33
+
 https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html
+
 https://www.daleseo.com/sort-merge/
+
 https://velog.io/@chappi/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-6%EC%9D%BC%EC%B0%A8-On-%EC%A0%95%EB%A0%AC-%EA%B3%84%EC%88%98-%EC%A0%95%EB%A0%AC
