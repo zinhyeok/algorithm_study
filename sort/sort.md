@@ -1,0 +1,187 @@
+# Sorting(정렬)
+
+- 정렬 알고리즘: n개의 숫자가 입력으로 주어졌을 때, 이를 사용자가 지정한 기준에 맞게 정렬하여 출력하는 알고리즘
+- 다양한 알고리즘이 있지만, 대다수 O(n^2)이거나 O(nlogn)의 시간복잡도를 가진다.
+- 본 정리는 기본적으로 오름차순정렬을 기준으로 작성되었다.
+
+## 1. 선택정렬(Selection Sort)
+
+- 선택정렬: 현재위치에 들어갈 값을 찾아서 정렬하는 배열. Min-selection sort, Max-selection sort로 나누어지고, 전자는 오름차순으로 후자는 내림차순으로 정렬한다
+- 기본 로직: 가장 작은 원소를 앞으로 보내는 과정을 N-1번 반복한다
+
+<img width="480" alt="img" src="https://gmlwjd9405.github.io/images/algorithm-selection-sort/selection-sort.png">
+
+1️⃣ 주어진 배열 중 최솟값을 찾는다
+
+2️⃣ 그 값을 맨 앞에 위치한 값과 교체한다
+
+3️⃣ 다음 인덱스에서 이 과정을 N-1번 반복한다
+
+``` python 
+lst = [40,2,10,1,4,27,0,8]
+  
+for i in range(len(lst)-1):
+    min_idx = i 
+    for j in range(i+1, len(lst)):
+      if lst[min_idx]>lst[j]:
+          min_idx = j
+    lst[i], lst[min_idx] = lst[min_idx], lst[i]
+
+print(lst)
+      
+```
+- 시간복잡도: O(n^2)
+- n-1 + n-2 + n-3 + ... + 2 or 이중 for문 
+
+## 2.삽입정렬(Insertion Sort)
+- 이미 정렬된 배열 부분과 비교하여 자리를 정렬을 하는 알고리즘 
+- sorted array와 unsorted array가 나누어져있을 때 유리 
+<img width="700" src="https://gmlwjd9405.github.io/images/algorithm-insertion-sort/insertion-sort.png">
+
+1️⃣ 두번째 원소부터 시작한다(혹은 unsorted data의 첫 원소) 
+
+2️⃣ sorted 부분과 비교해 삽입할 위치를 찾는다(뒤에서 부터 훑는다)
+
+3️⃣ 원소들을 뒤로 옮기고 지정된 위치에 자료를 삽입한다 이후 이를 N-1번 반복한다 
+
+```python
+lst = [40,2,10,1,4,27,0,8]
+  
+for i in range(1,len(lst)):
+    for j in range(i, 0, -1):
+        if lst[j-1]>lst[j]:
+            lst[j-1], lst[j] = lst[j], lst[j-1]
+        else:
+          break
+        
+print(lst)
+```
+- 시간복잡도: O(n^2)
+## 3.버블정렬(Bubble Sort)
+- 버블 정렬: 서로 인접한 두 원소를 검사하여 정렬하는 알고리즘, 큰 것(혹은 작은 것)을 계속 위로 올리는 알고리즘
+- 끝에서 부터 정렬이 완료된다 
+<img width="700" src="https://gmlwjd9405.github.io/images/algorithm-insertion-sort/insertion-sort.png">
+
+1️⃣ 첫번째 원소와 두번째 원소를 비교하여 교환한다. 두번째와 세번째를 비교하여 교환한다, 이 과정을 n번째와 비교할때까지 반복한다.
+
+2️⃣ 두번째 원소도 같은 과정을 반복한다. 이때는 n-1번째까지와만 비교한다
+
+3️⃣ 모든 원소를 정렬할 때 까지 해당과정을 반복한다
+
+```python
+lst = [40,2,10,1,4,27,0,8]
+
+for i in range(len(lst)-1, 0, -1):
+    for j in range(i):
+        if lst[j] > lst[j + 1]:
+            lst[j], lst[j + 1] = lst[j + 1], lst[j]
+  
+print(lst)
+```
+- 시간복잡도: O(n^2)
+## 4. 병합정렬(Merge Sort)
+ - 병합정렬: divide & conquer의 대표적인 예
+ - O(nlogn)의 시간복잡도를 가짐
+ <img width="664" alt="image" src="https://user-images.githubusercontent.com/91522259/210288396-3dab48ae-4add-42d6-b290-cc3cae4bfbb0.png">
+ <img width="664" alt="image" src="https://gmlwjd9405.github.io/images/algorithm-merge-sort/merge-sort.png">
+1️⃣ 입력배열을 같은 크기의 2개의 부분 배열로 분할한다
+
+2️⃣ 부분 배열을 정렬한다. 이때 부분배열의 크기가 충분히 작지 않으면 재귀를 이용한다
+
+3️⃣ 정렬된 부분배열을 병합한다(이 과정이 2번째 이미지에 있음)
+```python 
+def merge_sort(arr):
+    if len(arr) < 2:
+        return arr
+
+    mid = len(arr) // 2
+    low_arr = merge_sort(arr[:mid])
+    high_arr = merge_sort(arr[mid:])
+
+    merged_arr = []
+    l = h = 0
+    while l < len(low_arr) and h < len(high_arr):
+        if low_arr[l] < high_arr[h]:
+            merged_arr.append(low_arr[l])
+            l += 1
+        else:
+            merged_arr.append(high_arr[h])
+            h += 1
+    merged_arr += low_arr[l:]
+    merged_arr += high_arr[h:]
+    return merged_arr
+```
+```python
+def merge_sort(arr):
+    def sort(low, high):
+        if high - low < 2:
+            return
+        mid = (low + high) // 2
+        sort(low, mid)
+        sort(mid, high)
+        merge(low, mid, high)
+
+    def merge(low, mid, high):
+        temp = []
+        l, h = low, mid
+
+        while l < mid and h < high:
+            if arr[l] < arr[h]:
+                temp.append(arr[l])
+                l += 1
+            else:
+                temp.append(arr[h])
+                h += 1
+
+        while l < mid:
+            temp.append(arr[l])
+            l += 1
+        while h < high:
+            temp.append(arr[h])
+            h += 1
+
+        for i in range(low, high):
+            arr[i] = temp[i - low]
+
+    return sort(0, len(arr))
+```
+- 메모리 효율이 좋지 않다
+- 속도는 빠르다 
+- 시간복잡도 증명은 t(n) = t(n/2) + t(n/2) + n임으로 t(1)=0에서 시작하여 t(n)일때까지 식을 전개하면 된다
+
+## 5.퀵 정렬(Quick sort)
+- pivot을 기준으로 pivot보다 작은 요소를 모두 왼쪽으로, pivot보다 큰 요소들은 오른쪽으로 옮긴다 
+- 재귀를 이용한다 
+- 보통은 random하게 pivot을 정하나, midian값을 이용하는 것이 더 안전하다 
+<img width="537" alt="image" src="https://user-images.githubusercontent.com/91522259/210288024-b5255fe1-f6c8-4347-84bd-e9f8aa8fcde2.png">
+
+1️⃣ 분할
+
+- 피벗(교환하기 위한 기준) 설정 
+- 왼쪽에서는 피벗보다 큰 데이터 찾고, 오른쪽에서부터 피벗보다 작은 데이터를 찾는다, 아니면 넘어간다
+- 큰 데이터와 작은 데이터의 위치를 서로 교환한다
+- 두 값이 엇갈린 경우 종료하고, 피벗의 위치를 low(작은값)과 교환한다 
+
+2️⃣ 왼쪽 리스트와 오른쪽 리스트를 똑같은 방식으로 정렬
+
+```python
+
+```
+
+- 시간복잡도는 평균의 경우 O(nlogn)이다
+- n = 2^k라 하면 순환 호출은 k번이 필요할 것이다. 이때 각 경우에서 pivot을 이용해 정렬하는 연산은 N번 이루어진다. 
+- 따라서 O(Kn) = O(nlogn)이다 
+
+## 6. 계수 정렬(counting sort)
+## 7. radix sort
+
+✨ 코딩테스트에서 정렬 사용하기 
+1. 내장되어 있는 정렬 기능 sorted(), .sort()를 이용한다
+2. 정렬 알고리즘의 원리를 알고 있는지 확인하는 문제도 있다
+3. 메모리 제한이 있는 경우도 있다. 해당 케이스를 주의하자 
+
+🎓 참고 및 출처
+https://hsp1116.tistory.com/33
+https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html
+https://www.daleseo.com/sort-merge/
+https://velog.io/@chappi/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-6%EC%9D%BC%EC%B0%A8-On-%EC%A0%95%EB%A0%AC-%EA%B3%84%EC%88%98-%EC%A0%95%EB%A0%AC
