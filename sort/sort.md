@@ -200,8 +200,96 @@ print(lst)
 -시간복잡도 O(n)을 가지는 정렬 
 - 데이터 값이 양수여야함 
 - 값의 범위가 너무 크지 않아야한다 
-## 7. radix sort
+- 메모리를 많이 사용한다
+<img width="537" src="https://velog.velcdn.com/images%2Fluvlik207%2Fpost%2F74c72cee-d764-4fcc-adff-e251677f54ae%2F%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-09-24%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%2010.58.00.png">
 
+1️⃣ 계수 정렬(counting sort)을 위해 count 배열을 만들고, 배열(인덱스)를 앞에서부터 순회하면서 해당 원소가 몇번 나왔는지 기록한다
+
+2️⃣ count배열을 이용해 누적합을 기록할 sum배열을 만든다
+
+3️⃣ sum배열을 이용해 뒤에서부터 역순으로 원래 배열을 순회하며 기록한다
+
+https://www.cs.miami.edu/home/burt/learning/Csc517.091/workbook/countingsort.html
+
+```python
+# 모든 원소의 값이 0보다 크거나 같다고 가정
+array = [7, 5, 9, 0, 3, 1, 6, 2, 9, 1, 4, 8, 0, 5, 2]
+def counting(arr):
+    m = max(K)
+    #모든 범위를 포함하는 리스트 선언
+    C = [0] * (m + 1)
+    #count array 채우기
+    for a in arr:
+        C[a] += 1
+    #누적합 sum 만들기
+    for i in range(1, m + 1):
+        C[i] += C[i - 1]
+    #결과담기
+    result = [0] * len(arr)
+    for a in arr:
+        result[C[a] - 1] = a
+        C[a] -= 1
+    return result
+    
+print(counting(arrary))
+
+```
+- 시간 복잡도 O(N+K), K는 데이터의 최대값의 크기 
+- 공간복잡도: O(N+K)
+- 동일한 값이 많을 때 사용하기 좋음, 값의 범위가 크면 사용하기 어려움 
+## 7. radix sort
+-bucket을 이용한 알고리즘 
+-O(n)의 시간복잡도를 가지는 대표적인 알고리즘
+-que 자료구조를 이용한다
+<img width="480" src="https://mblogthumb-phinf.pstatic.net/20150809_22/kibum1223_1439077236991H7E1C_PNG/1.png?type=w2">
+<img width="480" src="https://user-images.githubusercontent.com/86557453/213387769-c3b9ed38-f265-4a77-bad7-0fb8140243d4.png">
+```python
+def countingSort(arr, digit):
+    n = len(arr)
+  
+    # 배열의 크기에 맞는 output 배열을 생성하고 10개의 0을 가진 count란 배열을 생성한다. 
+    output = [0] * (n)
+    count = [0] * (10)
+    
+    #digit, 자릿수에 맞는 count에 += 1을 한다. 
+    for i in range(0, n):
+        index = int(arr[i]/digit) 
+        count[ (index)%10 ] += 1
+ 
+    # count 배열을 수정해 digit으로 잡은 포지션을 설정한다.  
+    for i in range(1,10):
+        count[i] += count[i-1]  
+        print(i, count[i])
+    # 결과 배열, output을 설정한다. 설정된 count 배열에 맞는 부분에 arr원소를 담는다.   
+    i = n - 1
+    while i >= 0:
+        index = int(arr[i]/digit)
+        output[ count[ (index)%10 ] - 1] = arr[i]
+        count[ (index)%10 ] -= 1
+        i -= 1
+
+    #arr를 결과물에 다시 재할당한다.  
+    for i in range(0,len(arr)): 
+        arr[i] = output[i]
+ 
+# Method to do Radix Sort
+def radixSort(arr):
+    # arr 배열중에서 maxValue를 잡아서 어느 digit, 자릿수까지 반복하면 될지를 정한다. 
+    maxValue = max(arr)  
+    #자릿수마다 countingSorting을 시작한다. 
+    digit = 1
+    while int(maxValue/digit) > 0: 
+        countingSort(arr,digit)
+        digit *= 10
+ 
+arr = [ 170, 45, 75, 90, 802, 24, 2, 66]
+#arr = [4, 2, 1, 5, 7, 2]
+radixSort(arr)
+ 
+for i in range(len(arr)):
+    print(arr[i], end=" ")
+```
+- max element의 자릿수를 알아야한다, 혹은 max element를 알아야한다는 단점이 있다
 ✨ 코딩테스트에서 정렬 사용하기 
 1. 내장되어 있는 정렬 기능 sorted(), .sort()를 이용한다
 2. 정렬 알고리즘의 원리를 알고 있는지 확인하는 문제도 있다
@@ -215,3 +303,5 @@ https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html
 https://www.daleseo.com/sort-merge/
 
 https://velog.io/@chappi/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-6%EC%9D%BC%EC%B0%A8-On-%EC%A0%95%EB%A0%AC-%EA%B3%84%EC%88%98-%EC%A0%95%EB%A0%AC
+
+https://8iggy.tistory.com/123
