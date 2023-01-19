@@ -201,6 +201,7 @@ print(lst)
 - 데이터 값이 양수여야함 
 - 값의 범위가 너무 크지 않아야한다 
 - 메모리를 많이 사용한다
+- 가장 큰 데이터와 가장 작은 데이터의 차이가 1,000,000을 넘지 않을 때 효과적으로 사용 가능
 <img width="537" src="https://velog.velcdn.com/images%2Fluvlik207%2Fpost%2F74c72cee-d764-4fcc-adff-e251677f54ae%2F%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-09-24%20%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB%2010.58.00.png">
 
 1️⃣ 계수 정렬(counting sort)을 위해 count 배열을 만들고, 배열(인덱스)를 앞에서부터 순회하면서 해당 원소가 몇번 나왔는지 기록한다
@@ -213,26 +214,27 @@ https://www.cs.miami.edu/home/burt/learning/Csc517.091/workbook/countingsort.htm
 
 ```python
 # 모든 원소의 값이 0보다 크거나 같다고 가정
-array = [7, 5, 9, 0, 3, 1, 6, 2, 9, 1, 4, 8, 0, 5, 2]
-def counting(arr):
-    m = max(K)
-    #모든 범위를 포함하는 리스트 선언
-    C = [0] * (m + 1)
-    #count array 채우기
-    for a in arr:
-        C[a] += 1
-    #누적합 sum 만들기
-    for i in range(1, m + 1):
-        C[i] += C[i - 1]
-    #결과담기
-    result = [0] * len(arr)
-    for a in arr:
-        result[C[a] - 1] = a
-        C[a] -= 1
-    return result
-    
-print(counting(arrary))
+# 정렬을 수행할 배열
+arr = [4, 7, 9, 1, 3, 5, 2, 3, 4]
 
+count = [0] * (max(arr) + 1)
+
+for num in arr:
+    count[num] += 1
+    
+for i in range(1, len(count)):
+    count[i] += count[i-1]
+
+result = [0] * (len(arr))
+
+for num in arr:
+    idx = count[num]
+    result[idx - 1] = num
+    count[num] -= 1
+
+print(result)
+
+# [1, 2, 3, 3, 4, 4, 5, 7, 9]
 ```
 - 시간 복잡도 O(N+K), K는 데이터의 최대값의 크기 
 - 공간복잡도: O(N+K)
