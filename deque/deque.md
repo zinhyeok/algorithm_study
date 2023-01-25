@@ -34,3 +34,11 @@ print(queue)
 # 결과
 deque([1, 5])
 ```
+
+## list와 비교
+python의 list는 이름과 다르게 고정된 사이즈의 메모리를 갖는 동적배열형태이다
+- pop(0) vs popleft() 
+
+N개의 원소를 가진 list에서 pop(0)를 하게 되면 list의 첫번째 원소를 삭제하고 난 뒤에 N-1개의 요소들이 모두 shift하며 앞으로 한칸씩 이동해야한다
+
+따라서 list를 이용해 que의 dequeue를 구현하면 O(n)의 시간복잡도를 가짐으로 duqueue를 이용해 queue를 구현한다 
