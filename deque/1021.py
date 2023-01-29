@@ -14,7 +14,8 @@ for i in range(M):
             que.popleft()
             break
         #case 1: 1 2 3 4 5 6... 10 11 -> 2를 뽑아야한다
-        #elif cmd < que[len(que)//2] -> 시간초과
+        #elif cmd < que[len(que)//2] :
+        #-> 시간초과 & index 받는게 더 정확함 한번 뽑고 난 뒤에는 정렬이 보장되지 않음
         elif que.index(cmd) < len(que)/2:
             tmp = que.popleft()
             que.append(tmp)
