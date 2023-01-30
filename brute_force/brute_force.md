@@ -42,7 +42,7 @@ def combination(arr,r):
             wanted.append([i])
 
     else:
-    #i로 하나 뽑기
+    #i로 하나 뽑기 n<r이 되는 상황 제한, n=r까지만 돔 
         for i in range(len(arr)-r+1):
     #j로 하나를 제외한 나머지 범위에서 r-1개 뽑기 재귀
             for j in combination(arr[i+1:], r-1):
