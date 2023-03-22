@@ -18,7 +18,18 @@ def dfs(graph, visit, start):
             if graph[start][i] == 1 and visit[i] == False:
                 dfs(graph, visit, i)
 
-
+# def dfs(tree, i):
+#   stack=[i]
+#   visited = [0] * (N + 1)
+#   while stack:
+#     x = stack.pop()
+#     if visited[x] == 0:
+#       print(x, end=' ')
+#       visited[x] = 1
+#     for c in range(len(tree[x])-1, -1, -1):
+#     # 문제에서 작은 숫자부터 입력하기를 요구해서 반대로 순회했습니다.
+#       if matrix[x][c] == 1 and visited[c]==0:
+#         stack.append(c)
 
 def bfs(graph, visit, start):
     q = collections.deque()
